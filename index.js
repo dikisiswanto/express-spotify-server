@@ -98,8 +98,6 @@ app.get("/playlist/track/:trackId/play", (req, res) => {
   }
 });
 
-app.pos;
-
 app.listen(port, () => {
   console.log(`Express.js spotify server listening on port ${port}`);
 });
