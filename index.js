@@ -14,7 +14,7 @@ const handleError = (res, error) => {
   });
 };
 
-app.get("/playlist", (req, res) => {
+app.get("/playlists/tracks", (req, res) => {
   try {
     const message = playlist.count()
       ? "Data retrieved successfully"
@@ -25,10 +25,10 @@ app.get("/playlist", (req, res) => {
 
     if (sort) {
       switch (sort) {
-        case "asc":
+        case "desc":
           allTracks = allTracks.slice().sort((a, b) => b.played - a.played);
           break;
-        case "desc":
+        case "asc":
           allTracks = allTracks.slice().sort((a, b) => a.played - b.played);
           break;
         default:
@@ -47,7 +47,7 @@ app.get("/playlist", (req, res) => {
   }
 });
 
-app.post("/playlist/track", (req, res) => {
+app.post("/playlists/tracks", (req, res) => {
   const { title, url, artists } = req.body;
   try {
     if (!title || !artists || !url) {
@@ -67,7 +67,7 @@ app.post("/playlist/track", (req, res) => {
   }
 });
 
-app.get("/playlist/track/:trackId", (req, res) => {
+app.get("/playlists/tracks/:trackId", (req, res) => {
   try {
     const { trackId } = req.params;
     const track = playlist.find("id", trackId);
@@ -80,7 +80,7 @@ app.get("/playlist/track/:trackId", (req, res) => {
   }
 });
 
-app.get("/playlist/track/:trackId/play", (req, res) => {
+app.get("/playlists/tracks/:trackId/play", (req, res) => {
   try {
     const { trackId } = req.params;
     const track = playlist.find("id", trackId);
