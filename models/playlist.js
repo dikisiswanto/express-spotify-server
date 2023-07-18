@@ -59,15 +59,15 @@ const update = (newTrack, trackId) => {
   const trackIndex = playlist.findIndex((track) => track.id === trackId);
 
   if (trackIndex === -1) {
-    throw new Error('Track not found in the playlist.');
+    throw new Error("Track not found in the playlist.");
   }
 
   playlist[trackIndex] = {
     ...playlist[trackIndex],
-    ...newTrack
+    ...newTrack,
   };
 
   return playlist[trackIndex];
-}
+};
 
 module.exports = { get, count, add, update, find, remove };
