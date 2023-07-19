@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const playlist = require("../models/playlist");
 
@@ -44,7 +44,7 @@ router.get("/tracks", (req, res) => {
 
 router.post("/tracks", (req, res) => {
   const { title, url, artists } = req.body;
-  
+
   try {
     if (!title || !artists || !url) {
       throw new Error(
