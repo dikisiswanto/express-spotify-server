@@ -1,66 +1,31 @@
-const crypto = require("crypto");
+const mongoose = require("mongoose");
 
-const playlist = [];
-
-const get = () => {
-  return playlist;
-};
-
-const count = () => {
-  return playlist.length;
-};
-
-const add = ({ title, url, artists }) => {
-  const track = {
-    id: crypto.randomBytes(16).toString("hex"),
-    title,
-    url,
-    artists,
-    played: 0,
-    created_at: new Date().toISOString(),
-  };
-  playlist.push(track);
-  return track;
-};
-
-const find = (key, value) => {
-  const validKeys = ["id", "title"];
-  if (!validKeys.includes(key)) {
-    throw new Error(
-      `Invalid key. Only ${validKeys.join(" and ")} keys are supported.`
-    );
+const schema = new mongoose.Schema(
+  {
+    title: {
+      required: true,
+      type: String,
+    },
+    url: {
+      required: true,
+      type: String,
+    },
+    artists: {
+      required: true,
+      type: Array,
+    },
+    played: {
+      required: true,
+      type: Number,
+      default: 0,
+    },
+  },
+  {
+    timestamps: {
+      createdAt: "created_at", // Use `created_at` to store the created date
+      updatedAt: "updated_at", // and `updated_at` to store the last updated date
+    },
   }
-  const track = playlist.find((track) => track[key] === value);
-  if (!track) {
-    throw new Error("Track not found in the playlist.");
-  }
-  return track;
-};
+);
 
-const remove = (key, value) => {
-  const validKeys = ["id", "title"];
-  if (!validKeys.includes(key)) {
-    throw new Error(
-      `Invalid key. Only ${validKeys.join(" and ")} keys are supported.`
-    );
-  }
-  const index = playlist.findIndex((item) => item[key] === value);
-  if (index === -1) {
-    throw new Error("Track not found in the playlist.");
-  }
-  playlist.splice(index, 1);
-};
-
-const update = (newTrack, trackId) => {
-  const trackIndex = playlist.findIndex((track) => track.id === trackId);
-  if (trackIndex === -1) {
-    throw new Error("Track not found in the playlist.");
-  }
-  playlist[trackIndex] = {
-    ...playlist[trackIndex],
-    ...newTrack,
-  };
-  return playlist[trackIndex];
-};
-
-module.exports = { get, count, add, update, find, remove };
+module.exports = mongoose.model("Playlist", schema);
